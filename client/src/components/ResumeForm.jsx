@@ -10,13 +10,14 @@ export default function ResumeForm({ onResult }) {
   const navigate = useNavigate();
 
   const handleAnalyze = async () => {
-    const token = localStorage.getItem("token");
+    setLoading(true);
+    // const token = localStorage.getItem("token");
 
-    // 🔐 AUTH GUARD
-    if (!token) {
-      navigate("/login");
-      return;
-    }
+    // // 🔐 AUTH GUARD
+    // if (!token) {
+    //   navigate("/login");
+    //   return;
+    // }
 
     const formData = new FormData();
     if (file) formData.append("resume", file);
