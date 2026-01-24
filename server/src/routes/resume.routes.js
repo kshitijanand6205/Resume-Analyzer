@@ -9,7 +9,7 @@ const router = express.Router();
 router.post(
   '/',
   authMiddleware,
-  uploadMiddleware.single('resume'), // IMPORTANT
+  uploadMiddleware.single('resume'), 
   uploadResume
 );
 

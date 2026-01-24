@@ -1,5 +1,4 @@
 import bcrypt from 'bcryptjs';
-//import jwt from 'jsonwebtoken';
 import { createUser, findByEmail } from '../models/user.model.js';
 import logger from '../utils/logger.js';
 import { generateToken } from "../services/auth.service.js";
