@@ -1,9 +1,25 @@
+// import express from 'express';
+// import { analyzeResume } from '../controllers/analysis.controller.js';
+// import authMiddleware from '../middleware/auth.middleware.js';
+
+// const router = express.Router();
+
+// router.post('/', authMiddleware, analyzeResume);
+
+// export default router;
+
 import express from 'express';
 import { analyzeResume } from '../controllers/analysis.controller.js';
 import authMiddleware from '../middleware/auth.middleware.js';
+import upload from '../middleware/upload.middleware.js';
 
 const router = express.Router();
 
-router.post('/', authMiddleware, analyzeResume);
+router.post(
+  '/',
+  authMiddleware,
+  upload.single("resume"),
+  analyzeResume
+);
 
 export default router;

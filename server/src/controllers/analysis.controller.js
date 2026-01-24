@@ -1,55 +1,48 @@
-import { saveAnalysis } from '../models/analysis.model.js';
-import { getResumesByUser } from '../models/resume.model.js';
-import { calculateATSScore } from '../services/ats.service.js';
-import { analyzeWithAI } from '../services/ai.service.js';
-import logger from '../utils/logger.js';
+import fs from "fs";
+import pdfParse from "pdf-parse";
+import { calculateATSScore } from "../services/ats.service.js";
+import { analyzeWithAI } from "../services/ai.service.js";
 
-export const analyzeResume = async (req, res, next) => {
+export const analyzeResume = async (req, res) => {
   try {
-    const { resumeId, jobDesc } = req.body;
-    const userId = req.user.id;
+    let resumeText = "";
+    const jobDesc = req.body.jobDesc || "Software Developer";
 
-    // Basic validation
-    if (!resumeId || !jobDesc) {
-      return res.status(400).json({
-        message: "resumeId and jobDesc are required"
-      });
+    // 1️⃣ Get resume text
+    if (req.file) {
+      const buffer = fs.readFileSync(req.file.path);
+      const pdf = await pdfParse(buffer);
+      resumeText = pdf.text;
+    } else if (req.body.text) {
+      resumeText = req.body.text;
+    } else {
+      return res.status(400).json({ message: "No resume provided" });
     }
 
-    // Fetch user's resumes
-    const resumes = await getResumesByUser(userId);
-
-    // Find the requested resume
-      const resume = resumes.find(r => r.id === Number(resumeId));
-
-    if (!resume) {
-      return res.status(404).json({
-        message: "Resume not found for this user"
-      });
+    if (resumeText.length < 50) {
+      return res.status(400).json({ message: "Resume text too short" });
     }
 
-    // Calculate ATS score
-    const atsScore = calculateATSScore(resume.content, jobDesc);
+    // 2️⃣ ATS score (your logic)
+    const score = calculateATSScore(resumeText, jobDesc);
 
-    // AI-based analysis
-    const aiFeedback = await analyzeWithAI(resume.content, jobDesc);
+    // 3️⃣ AI analysis (SAFE – never throws)
+    const ai = await analyzeWithAI(resumeText, jobDesc);
 
-    // Save analysis result
-    const analysisId = await saveAnalysis(
-      resumeId,
-      atsScore,
-      aiFeedback
-    );
-
-    // Success response
-    res.status(200).json({
-      analysisId,
-      atsScore,
-      aiFeedback
+    return res.json({
+      score,
+      strengths: ai.strengths,
+      weaknesses: ai.weaknesses,
+      suggestions: ai.suggestions
     });
 
-  } catch (error) {
-    logger.error("Analyze Resume Error:", error);
-    next(error);
+  } catch (err) {
+    console.error("ANALYZE CONTROLLER ERROR:", err);
+    return res.json({
+      score: 0,
+      strengths: "Could not analyze strengths",
+      weaknesses: "Could not analyze weaknesses",
+      suggestions: "Please try again"
+    });
   }
 };
