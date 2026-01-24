@@ -9,22 +9,36 @@ import requireAuth from "./middleware/auth.middleware.js";
 
 const app = express();
 
+
+
+// Global middleware
+app.use(helmet());
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  process.env.FRONTEND_URL
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+}));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.get("/api/me", requireAuth, (req, res) => {
   res.json({
     id: req.user.id,
     email: req.user.email,
   });
 });
-
-// Global middleware
-app.use(helmet());
-app.use(cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
-);
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 // Mount routes
 app.use('/api/auth', authRoutes);
