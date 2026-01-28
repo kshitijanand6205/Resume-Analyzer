@@ -6,8 +6,9 @@ const envSchema = Joi.object({
   DB_PASSWORD: Joi.string().required(),
   DB_NAME: Joi.string().required(),
   JWT_SECRET: Joi.string().required(),
-  GEMINI_API_KEY: Joi.string().required(),
+  GROQ_API_KEY: Joi.string().required(),
   PORT: Joi.number().default(3000),
+  FRONTEND_URL: Joi.string().optional(),
 }).unknown();
 
 const { error } = envSchema.validate(process.env);
