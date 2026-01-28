@@ -190,4 +190,3 @@ This project is licensed under the MIT License.
 For support and questions:
 - Check the issues section
 - Create a new issue for bugs or feature requests
-- Review the optimization documentation above
