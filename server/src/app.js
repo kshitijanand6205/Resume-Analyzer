@@ -50,11 +50,11 @@ const apiLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-// CORS Configuration
 const allowedOrigins = [
-  "http://localhost:5173",
-  "http://127.0.0.1:5173"
+  "https://your-frontend.vercel.app",
+  "http://localhost:5173"
 ];
+
 
 // Add FRONTEND_URL if it exists and is not undefined
 if (process.env.FRONTEND_URL) {
