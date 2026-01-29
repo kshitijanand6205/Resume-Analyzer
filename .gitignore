@@ -14,7 +14,7 @@ yarn-debug.log*
 Thumbs.db
 
 # package.json
-package.json
+package.json/
 
 # package-lock.json
-package-lock.json
+package-lock.json/
