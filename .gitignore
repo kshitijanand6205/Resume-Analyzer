@@ -12,3 +12,9 @@ yarn-debug.log*
 # OS files
 .DS_Store
 Thumbs.db
+
+# package.json
+package.json
+
+# package-lock.json
+package-lock.json
