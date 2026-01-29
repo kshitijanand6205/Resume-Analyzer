@@ -1,17 +1,49 @@
 import bcrypt from 'bcryptjs';
 import { createUser, findByEmail } from '../models/user.model.js';
-import logger from '../utils/logger.js';
 import { generateToken } from "../services/auth.service.js";
+import logger from '../utils/logger.js';
 
-export const register = async (req, res, next) => {
+export const register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const {email, password } = req.body;
+    
+    // Validate required fields
+    if (!email || !password) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'email, and password are required' 
+      });
+    }
+
+    if (!email.includes('@')) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'Please provide a valid email address' 
+      });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'Password must be at least 6 characters long' 
+      });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const userId = await createUser(email, hashedPassword);
-    res.status(201).json({ message: 'User registered', userId });
+
+    
+    res.status(201).json({ 
+      success: true,
+      message: 'User registered successfully',
+      userId 
+    });
   } catch (error) {
-    logger.error(error);
-    next(error);
+    console.error('Registration error:', error);
+    res.status(500).json({ 
+      success: false,
+      message: 'Registration failed. Please try again.' 
+    });
   }
 };
 
@@ -23,8 +55,6 @@ export const login = async (req, res, next) => {
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
-    // const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    // res.json({ token });
     const token = generateToken(user);
 
     res.json({

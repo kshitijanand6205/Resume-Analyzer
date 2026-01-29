@@ -1,4 +1,4 @@
-export const calculateATSScore = (resumeText, jobDesc) => {
+export const analyzeResumeATS = (resumeText, jobDesc) => {
   if (!resumeText || !jobDesc) return 0;
 
   const clean = (text) =>

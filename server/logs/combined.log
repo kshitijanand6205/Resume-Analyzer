@@ -1,0 +1,4 @@
+{"level":"info","message":"POST /register - 201 - 215ms","timestamp":"2026-01-29T19:25:32.983Z"}
+{"level":"info","message":"POST /login - 200 - 167ms","timestamp":"2026-01-29T19:25:39.189Z"}
+{"level":"info","message":"POST / - 200 - 1103ms","timestamp":"2026-01-29T19:25:47.502Z"}
+{"level":"info","message":"POST / - 200 - 995ms","timestamp":"2026-01-29T19:25:59.766Z"}

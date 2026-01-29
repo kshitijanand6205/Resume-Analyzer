@@ -4,7 +4,7 @@ const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY
 });
 
-export const analyzeWithAI = async (resumeText, jobDesc) => {
+export const analyzeResume = async (resumeText, jobDesc) => {
   try {
     const prompt = `
 You are a senior ATS (Applicant Tracking System) resume evaluator and hiring analyst with deep expertise in:

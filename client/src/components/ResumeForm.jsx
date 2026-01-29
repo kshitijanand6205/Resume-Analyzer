@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useCallback } from "react";
 import { Button, TextField, Stack, Alert, LinearProgress } from "@mui/material";
 import { analyzeResume } from "../api/resumeApi";

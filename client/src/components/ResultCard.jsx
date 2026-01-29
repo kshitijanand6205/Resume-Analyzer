@@ -1,3 +1,4 @@
+import React from 'react';
 import { Card, CardContent, Typography, Divider, Chip, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 

@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect } from "react";
 import ResumeForm from "../components/ResumeForm";
 import ResultCard from "../components/ResultCard";

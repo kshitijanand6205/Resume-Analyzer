@@ -51,7 +51,6 @@ const apiLimiter = rateLimit({
 });
 
 const allowedOrigins = [
-  "https://your-frontend.vercel.app",
   "http://localhost:5173"
 ];
 

@@ -1,3 +1,4 @@
+import React from 'react';
 import { Button, TextField, Container, Typography, Box, Alert } from "@mui/material";
 import { useState } from "react";
 import axios from "../api/axiosInstance";
@@ -14,12 +15,13 @@ export default function Register() {
     setError("");
     setSuccess(false);
 
+  
     const email = e.target.email.value.trim();
     const password = e.target.password.value;
 
     // Basic validation
     if (!email || !password) {
-      setError("Please enter both email and password");
+      setError("Please enter name, email, and password");
       return;
     }
 
@@ -81,6 +83,8 @@ export default function Register() {
         )}
 
         <form onSubmit={handleSubmit}>
+         
+
           <TextField
             name="email"
             label="Email Address"
