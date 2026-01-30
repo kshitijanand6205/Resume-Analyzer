@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  // baseURL: "http://localhost:4000/api",
     baseURL: "https://resume-analyzer-neoo.onrender.com/api",
   withCredentials: true,
 });

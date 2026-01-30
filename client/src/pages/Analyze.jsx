@@ -8,7 +8,7 @@ export default function Analyze() {
   const [result, setResult] = useState(null);
   const [showResult, setShowResult] = useState(false);
 
-  // Trigger fade-in animation when result is available
+ 
   useEffect(() => {
     if (result) {
       setShowResult(true);
