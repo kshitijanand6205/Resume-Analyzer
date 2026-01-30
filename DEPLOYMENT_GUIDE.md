@@ -100,7 +100,7 @@ curl -H "Origin: https://resume-analyzer-mocha-phi.vercel.app" \
 4. Check that `credentials: true` is set in frontend axios config
 
 ### Common Issues:
-- **JWT_SECRET**: Must be the same between deployments
+- **JWT_SECRET**: Must be the same between deployments. **CRITICAL**: Without this, authentication will fail with 500 errors
 - **Database**: Ensure production database is accessible
 - **GROQ_API_KEY**: Must be valid for production use
 

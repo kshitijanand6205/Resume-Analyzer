@@ -29,7 +29,10 @@ export const register = async (req, res) => {
       });
     }
 
-    // Check if database is available
+    // Hash password first
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Check if database is available and user exists
     const userExists = await findByEmail(email);
     if (userExists) {
       return res.status(400).json({ 
@@ -38,7 +41,7 @@ export const register = async (req, res) => {
       });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // Try to create user
     const userId = await createUser(email, hashedPassword);
 
     
@@ -71,6 +74,7 @@ export const login = async (req, res, next) => {
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
+    
     const token = generateToken(user);
 
     res.json({
@@ -81,7 +85,15 @@ export const login = async (req, res, next) => {
       },
     });
   } catch (error) {
-    logger.error(error);
-    next(error);
+    console.error('Login error:', error);
+    if (error.message === 'JWT_SECRET environment variable is not set') {
+      res.status(500).json({ 
+        success: false,
+        message: 'Server configuration error. Please contact support.' 
+      });
+    } else {
+      logger.error(error);
+      next(error);
+    }
   }
 };
