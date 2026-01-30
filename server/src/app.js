@@ -11,6 +11,9 @@ import requireAuth from "./middleware/auth.middleware.js";
 
 const app = express();
 
+// Trust proxy for rate limiting (required for Render)
+app.set('trust proxy', 1);
+
 // Security middleware
 app.use(helmet({
   contentSecurityPolicy: {

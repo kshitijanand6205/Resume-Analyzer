@@ -29,6 +29,15 @@ export const register = async (req, res) => {
       });
     }
 
+    // Check if database is available
+    const userExists = await findByEmail(email);
+    if (userExists) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'User already exists' 
+      });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const userId = await createUser(email, hashedPassword);
 
@@ -40,10 +49,17 @@ export const register = async (req, res) => {
     });
   } catch (error) {
     console.error('Registration error:', error);
-    res.status(500).json({ 
-      success: false,
-      message: 'Registration failed. Please try again.' 
-    });
+    if (error.message === 'Database is not available') {
+      res.status(503).json({ 
+        success: false,
+        message: 'Database service is temporarily unavailable. Please try again later.' 
+      });
+    } else {
+      res.status(500).json({ 
+        success: false,
+        message: 'Registration failed. Please try again.' 
+      });
+    }
   }
 };
 
