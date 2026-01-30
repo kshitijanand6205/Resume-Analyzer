@@ -52,7 +52,7 @@ const apiLimiter = rateLimit({
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "resume-analyzer-mocha-phi.vercel.app"
+  "https://resume-analyzer-mocha-phi.vercel.app/"
 ];
 
 
@@ -76,6 +76,7 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
+app.options("*", cors()); 
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
