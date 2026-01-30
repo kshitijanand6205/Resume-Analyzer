@@ -52,13 +52,18 @@ const apiLimiter = rateLimit({
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://resume-analyzer-mocha-phi.vercel.app/"
+  "https://resume-analyzer-mocha-phi.vercel.app"
 ];
 
 
 // Add FRONTEND_URL if it exists and is not undefined
 if (process.env.FRONTEND_URL) {
   allowedOrigins.push(process.env.FRONTEND_URL);
+}
+
+// Add PRODUCTION_FRONTEND_URL if it exists
+if (process.env.PRODUCTION_FRONTEND_URL) {
+  allowedOrigins.push(process.env.PRODUCTION_FRONTEND_URL);
 }
 
 app.use(cors({
